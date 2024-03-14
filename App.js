@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   onPress,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 import { useState, useRef } from "react";
@@ -61,7 +62,7 @@ export default function App() {
 
   function handleLap() {
     if (running) {
-      setLap((prevLap) => [...prevLap, secondsPassed]);
+      setLap((prevLap) => [secondsPassed, ...prevLap]);
       console.log(lap);
     }
   }
@@ -78,12 +79,14 @@ export default function App() {
       </View>
       <View style={styles.LapRow}>
         <View style={styles.LapContainer}>
-          {lap.map((LapT, index) => (
-            <View key={index} style={styles.lapdisplay}>
-              <Text style={styles.LapText}>Lap:{index}</Text>
-              <Text style={styles.LapText}>{LapT}</Text>
-            </View>
-          ))}
+          <ScrollView contentContainerStyle={styles.scrollContainer}>
+            {lap.map((LapT, index) => (
+              <View key={index} style={styles.lapdisplay}>
+                <Text style={styles.LapText}>Lap:{lap.length - index}</Text>
+                <Text style={styles.LapText}>{LapT}</Text>
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </View>
       <View style={styles.row}>
@@ -201,5 +204,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "60%",
+    // backgroundColor: "blue",
+    marginTop: 2,
+  },
+  scrollContainer: {
+    // backgroundColor: "red",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
